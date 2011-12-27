@@ -1,0 +1,5 @@
+.etc
+.idea
+*.iml
+highlightr-core/target
+highlightr-web/target
