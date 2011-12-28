@@ -1,0 +1,26 @@
+Highlightr
+==========
+
+Hosting
+-------
+
+- Add heroku support
+    - Read quick-start guide
+    - Create application on heroku side
+
+Server Side
+-----------
+
+- REST API implementation
+- Multiple handlers for different statistics sources
+    - Facebook
+    - Digg
+    - Twitter
+    - Google+
+    - etc.
+- Check whether heroku supports external URL fetching
+
+Client Side
+-----------
+
+- Chrome extension creation
