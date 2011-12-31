@@ -1,24 +1,27 @@
 Highlightr
 ==========
 
-Hosting
--------
-
-- Add heroku support
-    - Read quick-start guide
-    - Create application on heroku side
-
 Server Side
 -----------
 
+- Heroku database setup
+
 - REST API implementation
+    - Ability to increase source rank using POST/PUT API
+    - Ability to retrieve rank by topic and URL
+
 - Multiple handlers for different statistics sources
     - Facebook
-    - Digg
     - Twitter
-    - Google+
-    - etc.
-- Check whether heroku supports external URL fetching
+        - Topic API
+        - URL API
+
+    - Delicious
+    - StumbleUpon
+    - LinkedIn
+
+- Summary rank calculation method
+- "Caching" of retrieved ranks in database
 
 Client Side
 -----------

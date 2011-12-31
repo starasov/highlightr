@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.blogpost.starasov.highlightr" />
+
+    <bean id="jsonObjectMapper" class="com.blogpost.starasov.highlightr.context.ObjectMapperFactoryBean"/>
+
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+                    <property name="objectMapper" ref="jsonObjectMapper"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="diggTopicRank" class="com.blogpost.starasov.highlightr.rank.digg.DiggTopicRank">
+        <constructor-arg index="0" ref="restTemplate"/>
+        <constructor-arg index="1" value='http://services.digg.com/2.0/search.search?query="{query}"'/>
+    </bean>
+
+    <bean id="googlePlusUrlRank" class="com.blogpost.starasov.highlightr.rank.google.PlusOneRank">
+        <constructor-arg index="0" ref="restTemplate"/>
+        <constructor-arg index="1" value='https://clients6.google.com/rpc?key=AIzaSyCKSbrvQasunBoV16zDH9R33D88CeLr9gQ'/>
+    </bean>
+
+</beans>
