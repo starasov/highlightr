@@ -29,4 +29,8 @@
         <constructor-arg index="1" value='https://clients6.google.com/rpc?key=AIzaSyCKSbrvQasunBoV16zDH9R33D88CeLr9gQ'/>
     </bean>
 
+    <bean id="twitterUrlRank" class="com.blogpost.starasov.highlightr.rank.twitter.TwitterUrlRank">
+        <constructor-arg index="0" ref="restTemplate"/>
+        <constructor-arg index="1" value='http://urls.api.twitter.com/1/urls/count.json?url={url}&amp;callback=highlightr"'/>
+    </bean>
 </beans>
