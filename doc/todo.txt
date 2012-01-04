@@ -10,17 +10,19 @@ Server Side
     - Ability to increase source rank using POST/PUT API
     - Ability to retrieve rank by topic and URL
 
-- Multiple handlers for different statistics sources
+- Multiple handlers for different statistics sources (@see http://sharedcount.com/documentation.php)
     - Facebook
-    - Twitter
-        - Topic API
-        - URL API
-
     - Delicious
     - StumbleUpon
     - LinkedIn
+    - DZone
+    - YCombinator
 
 - Summary rank calculation method
+    - Handle sources individually, so we could identify rank per source (RSS feed in our case):
+        - Statistics for individual source could differ from other sources, i.e. one source could be more popular in twitter
+          than in G+ and completely missing in Facebook. So statistics calculation should be sensitive only for popular.
+
 - "Caching" of retrieved ranks in database
 
 Client Side

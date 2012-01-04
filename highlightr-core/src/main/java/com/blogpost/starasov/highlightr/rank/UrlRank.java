@@ -7,6 +7,6 @@ import java.net.URL;
  * Date: 12/29/11
  * Time: 7:47 AM
  */
-public interface UrlRank {
+public interface UrlRank extends Rank<URL> {
     int get(URL url);
 }

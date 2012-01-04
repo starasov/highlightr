@@ -1,7 +1,7 @@
 package com.blogpost.starasov.highlightr;
 
-import com.blogpost.starasov.highlightr.rank.TopicRank;
-import com.blogpost.starasov.highlightr.rank.UrlRank;
+import com.blogpost.starasov.highlightr.rank.TopicRankAggregator;
+import com.blogpost.starasov.highlightr.rank.UrlRankAggregator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -16,9 +16,11 @@ import java.net.URL;
 public class Main {
     public static void main(String[] args) throws MalformedURLException {
         ApplicationContext context = new ClassPathXmlApplicationContext("app-context.xml");
-//        TopicRank topicRank = context.getBean("diggRank", TopicRank.class);
-        UrlRank urlRank = context.getBean("twitterUrlRank", UrlRank.class);
-        urlRank.get(new URL("http://ottopress.com/2010/twitters-new-tweet-button-and-the-count-api/"));
-//        System.out.println(topicRank.get("Scripting Layer for Android"));
+
+        UrlRankAggregator urlAggregator = context.getBean("urlRankAggregator", UrlRankAggregator.class);
+        TopicRankAggregator topicAggregator = context.getBean("topicRankAggregator", TopicRankAggregator.class);
+
+        System.out.println("urlAggregator.getAggregatedRank() = " + urlAggregator.getAggregatedRank(new URL("http://xkcd.com/999/")));
+        System.out.println("topicAggregator.getAggregatedRank() = " + topicAggregator.getAggregatedRank("Cougars"));
     }
 }

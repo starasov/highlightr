@@ -40,4 +40,34 @@
         <constructor-arg index="2" value='http://search.twitter.com/search.json%s'/>
         <constructor-arg index="3" value='5'/>
     </bean>
+
+    <bean id="urlRankAggregator" class="com.blogpost.starasov.highlightr.rank.UrlRankAggregator">
+        <constructor-arg name="ranks">
+            <map>
+                <entry key="twitter" value-ref="twitterUrlRank"/>
+                <entry key="google" value-ref="googlePlusUrlRank"/>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="rankWeights">
+            <map>
+                <entry key="twitter" value="1"/>
+                <entry key="google" value="1"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="topicRankAggregator" class="com.blogpost.starasov.highlightr.rank.TopicRankAggregator">
+        <constructor-arg name="ranks">
+            <map>
+                <entry key="twitter" value-ref="twitterTopicRank"/>
+                <entry key="digg" value-ref="diggTopicRank"/>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="rankWeights">
+            <map>
+                <entry key="twitter" value="1"/>
+                <entry key="digg" value="1"/>
+            </map>
+        </constructor-arg>
+    </bean>
 </beans>
