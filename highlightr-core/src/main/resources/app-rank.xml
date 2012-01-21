@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="jsonObjectMapper" class="com.blogpost.starasov.highlightr.context.ObjectMapperFactoryBean"/>
+
+    <bean id="messageDigestProvider" class="com.blogpost.starasov.highlightr.digest.MessageDigestProvider">
+        <constructor-arg value="SHA1"/>
+    </bean>
+
+    <bean id="stringSourceIdentifierBuilder" class="com.blogpost.starasov.highlightr.identifier.StringSourceIdentifierBuilder">
+        <constructor-arg ref="messageDigestProvider"/>
+    </bean>
+
+    <bean id="urlSourceIdentifierBuilder" class="com.blogpost.starasov.highlightr.identifier.UrlSourceIdentifierBuilder">
+        <constructor-arg ref="messageDigestProvider"/>
+    </bean>
+
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+                <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+                    <property name="objectMapper" ref="jsonObjectMapper"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="diggTopicRank" class="com.blogpost.starasov.highlightr.rank.digg.DiggTopicRankFinder">
+        <constructor-arg name="restTemplate" ref="restTemplate"/>
+        <constructor-arg name="urlTemplate" value='http://services.digg.com/2.0/search.search?query="{query}"'/>
+        <constructor-arg name="identifierBuilder" ref="stringSourceIdentifierBuilder"/>
+    </bean>
+
+    <bean id="googlePlusUrlRank" class="com.blogpost.starasov.highlightr.rank.google.PlusOneRankFinder">
+        <constructor-arg name="restTemplate" ref="restTemplate"/>
+        <constructor-arg name="urlTemplate" value='https://clients6.google.com/rpc?key=AIzaSyCKSbrvQasunBoV16zDH9R33D88CeLr9gQ'/>
+        <constructor-arg name="urlSourceIdentifierBuilder" ref="urlSourceIdentifierBuilder"/>
+    </bean>
+
+    <bean id="twitterUrlRank" class="com.blogpost.starasov.highlightr.rank.twitter.TwitterUrlRankFinder">
+        <constructor-arg name="restTemplate" ref="restTemplate"/>
+        <constructor-arg name="urlTemplate" value='http://urls.api.twitter.com/1/urls/count.json?url={url}&amp;callback=highlightr"'/>
+        <constructor-arg name="urlSourceIdentifierBuilder" ref="urlSourceIdentifierBuilder"/>
+    </bean>
+
+    <bean id="twitterTopicRank" class="com.blogpost.starasov.highlightr.rank.twitter.TwitterTopicRankFinder">
+        <constructor-arg name="restTemplate" ref="restTemplate"/>
+        <constructor-arg name="urlTemplate" value='http://search.twitter.com/search.json?q="%s"'/>
+        <constructor-arg name="paginationUrlTemplate" value='http://search.twitter.com/search.json%s'/>
+        <constructor-arg name="maxPages" value='5'/>
+        <constructor-arg name="identifierBuilder" ref="stringSourceIdentifierBuilder"/>
+    </bean>
+
+    <bean id="nullRank" class="com.blogpost.starasov.highlightr.rank.NullRankFinder"/>
+
+    <bean id="urlAggregateRankFinder" class="com.blogpost.starasov.highlightr.rank.AggregateRankFinder">
+        <constructor-arg name="ranks">
+            <map>
+                <!--<entry key="twitter" value-ref="twitterUrlRank"/>-->
+                <!--<entry key="google" value-ref="googlePlusUrlRank"/>-->
+                <entry key="google" value-ref="nullRank"/>
+                <entry key="twitter" value-ref="nullRank"/>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="rankWeights">
+            <map>
+                <entry key="twitter" value="1"/>
+                <entry key="google" value="1"/>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="sourceIdentifierBuilder" ref="urlSourceIdentifierBuilder"/>
+    </bean>
+
+    <bean id="topicAggregateRankFinder" class="com.blogpost.starasov.highlightr.rank.AggregateRankFinder">
+        <constructor-arg name="ranks">
+            <map>
+                <!--<entry key="twitter" value-ref="twitterTopicRank"/>-->
+                <!--<entry key="digg" value-ref="diggTopicRank"/>-->
+                <entry key="twitter" value-ref="nullRank"/>
+                <entry key="digg" value-ref="nullRank"/>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="rankWeights">
+            <map>
+                <entry key="twitter" value="1"/>
+                <entry key="digg" value="1"/>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="sourceIdentifierBuilder" ref="stringSourceIdentifierBuilder"/>
+    </bean>
+</beans>

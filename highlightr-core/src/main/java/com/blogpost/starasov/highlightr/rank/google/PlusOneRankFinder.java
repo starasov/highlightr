@@ -1,6 +1,8 @@
 package com.blogpost.starasov.highlightr.rank.google;
 
-import com.blogpost.starasov.highlightr.rank.UrlRank;
+import com.blogpost.starasov.highlightr.identifier.SourceIdentifierBuilder;
+import com.blogpost.starasov.highlightr.model.Rank;
+import com.blogpost.starasov.highlightr.rank.BaseRankFinder;
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,13 +24,15 @@ import java.util.Map;
  * Date: 12/30/11
  * Time: 11:15 AM
  */
-public class PlusOneRank implements UrlRank {
-    private static final Logger logger = LoggerFactory.getLogger(PlusOneRank.class);
+public class PlusOneRankFinder extends BaseRankFinder<URL> {
+    private static final Logger logger = LoggerFactory.getLogger(PlusOneRankFinder.class);
 
     private final RestTemplate restTemplate;
     private final String urlTemplate;
 
-    public PlusOneRank(RestTemplate restTemplate, String urlTemplate) {
+    public PlusOneRankFinder(RestTemplate restTemplate, String urlTemplate, SourceIdentifierBuilder<URL> urlSourceIdentifierBuilder) {
+        super(urlSourceIdentifierBuilder);
+
         Assert.notNull(restTemplate, "restTemplate parameter can't be null.");
         Assert.hasLength(urlTemplate, "urlTemplate parameter can't be null or empty.");
 
@@ -36,7 +40,7 @@ public class PlusOneRank implements UrlRank {
         this.restTemplate = restTemplate;
     }
 
-    public int get(URL url) {
+    public Rank get(URL url) {
         Assert.notNull(url, "url parameter can't be null.");
         logger.trace("[get] - begin - url: {}", url);
 
@@ -46,7 +50,7 @@ public class PlusOneRank implements UrlRank {
         int plusOneCount = parsePlusOneCount(result);
 
         logger.trace("[get] - plusOneCount: {}", plusOneCount);
-        return plusOneCount;
+        return createRankFrom(plusOneCount, url);
     }
 
     private HttpEntity<?> createRequestEntity(URL url) {

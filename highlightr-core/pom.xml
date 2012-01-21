@@ -11,7 +11,24 @@
     <packaging>jar</packaging>
     <name>highlightr-core</name>
 
+    <properties>
+        <org.apache.commons.version>2.2</org.apache.commons.version>
+        <postgresql.version>9.0-801.jdbc4</postgresql.version>
+    </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>3.6.8.Final</version>
+        </dependency>
+
         <!--  JSR 303 with Hibernate Validator -->
         <dependency>
             <groupId>javax.validation</groupId>
@@ -27,13 +44,13 @@
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-            <version>2.2</version>
+            <version>${org.apache.commons.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math</artifactId>
-            <version>2.2</version>
+            <version>${org.apache.commons.version}</version>
         </dependency>
     </dependencies>
 </project>

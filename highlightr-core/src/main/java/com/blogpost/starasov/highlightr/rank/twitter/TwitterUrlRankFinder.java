@@ -1,6 +1,9 @@
 package com.blogpost.starasov.highlightr.rank.twitter;
 
-import com.blogpost.starasov.highlightr.rank.UrlRank;
+import com.blogpost.starasov.highlightr.identifier.SourceIdentifierBuilder;
+import com.blogpost.starasov.highlightr.model.Rank;
+import com.blogpost.starasov.highlightr.rank.BaseRankFinder;
+import com.blogpost.starasov.highlightr.rank.UrlRankFinder;
 import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +17,15 @@ import java.net.URL;
  * Date: 12/31/11
  * Time: 2:17 PM
  */
-public class TwitterUrlRank implements UrlRank {
-    private static final Logger logger = LoggerFactory.getLogger(TwitterUrlRank.class);
+public class TwitterUrlRankFinder extends BaseRankFinder<URL> {
+    private static final Logger logger = LoggerFactory.getLogger(TwitterUrlRankFinder.class);
 
     private final RestTemplate restTemplate;
     private final String urlTemplate;
 
-    public TwitterUrlRank(RestTemplate restTemplate, String urlTemplate) {
+    public TwitterUrlRankFinder(RestTemplate restTemplate, String urlTemplate, SourceIdentifierBuilder<URL> urlSourceIdentifierBuilder) {
+        super(urlSourceIdentifierBuilder);
+
         Assert.notNull(restTemplate, "restTemplate parameter can't be null.");
         Assert.hasLength(urlTemplate, "urlTemplate parameter can't be null or empty.");
 
@@ -28,7 +33,7 @@ public class TwitterUrlRank implements UrlRank {
         this.restTemplate = restTemplate;
     }
 
-    public int get(URL url) {
+    public Rank get(URL url) {
         Assert.notNull(url, "url parameter can't be null.");
         logger.trace("[get] - begin - url: {}", url);
 
@@ -37,10 +42,10 @@ public class TwitterUrlRank implements UrlRank {
         if (countNode != null) {
             int count = countNode.getValueAsInt();
             logger.trace("[get] - end - count: {}", count);
-            return count;
+            return createRankFrom(count, url);
         } else {
             logger.warn("[get] - end - Failed to get twitted URL count. queryResults: {}", queryResults);
-            return 0;
+            return createRankFrom(0, url);
         }
     }
 }

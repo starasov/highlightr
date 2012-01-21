@@ -12,13 +12,16 @@ import org.apache.commons.lang.StringUtils;
  * Date: 12/30/11
  * Time: 3:52 PM
  */
-public class UrlSanitizer {
-    URL sanitize(URL url) {
+public final class UrlSanitizer {
+    private UrlSanitizer() {
+    }
+
+    public static URL sanitize(URL url) {
         Assert.notNull(url, "url parameter can't be null.");
         try {
             String sanitizedUrl = url.toString();
             String path = url.getPath();
-            if (StringUtils.isEmpty(path)) {
+            if (StringUtils.isEmpty(path) || !path.endsWith("/")) {
                 sanitizedUrl += "/";
             }
 

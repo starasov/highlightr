@@ -4,13 +4,14 @@ Highlightr
 Server Side
 -----------
 
-- Heroku database setup
+- Heroku database setup:
+    - Finish DataSource setup
 
 - REST API implementation
-    - Ability to increase source rank using POST/PUT API
-    - Ability to retrieve rank by topic and URL
+    - Ability to increase rankModel rankModel using POST/PUT API
+    - Ability to retrieve rankModel by topic and URL
 
-- Multiple handlers for different statistics sources (@see http://sharedcount.com/documentation.php)
+- Multiple handlers for different statistics ranks (@see http://sharedcount.com/documentation.php)
     - Facebook
     - Delicious
     - StumbleUpon
@@ -18,12 +19,24 @@ Server Side
     - DZone
     - YCombinator
 
-- Summary rank calculation method
-    - Handle sources individually, so we could identify rank per source (RSS feed in our case):
-        - Statistics for individual source could differ from other sources, i.e. one source could be more popular in twitter
+- Summary rankModel calculation method
+    - Handle ranks individually, so we could identify rankModel per rankModel (RSS feed in our case):
+        - Statistics for individual rankModel could differ from other ranks, i.e. one rankModel could be more popular in twitter
           than in G+ and completely missing in Facebook. So statistics calculation should be sensitive only for popular.
 
-- "Caching" of retrieved ranks in database
+- "Caching" of retrieved ranks in database:
+    - Check ecache backend.
+
+- Add streams support:
+    - Finalize JPA setup
+    - Add SHA1 calculation for stream id
+    - Add statistics calculation for stream
+    - Add ranks mapping with stream
+
+- Create DAOs:
+    - Check spring-data module
+
+- Create services
 
 Client Side
 -----------
