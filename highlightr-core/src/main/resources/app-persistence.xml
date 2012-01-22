@@ -50,7 +50,7 @@
 
     <beans profile="production">
         <bean class="java.net.URI" id="dbUrl">
-            <constructor-arg value="${DATABASE_URL}"/>
+            <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
         </bean>
 
         <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
