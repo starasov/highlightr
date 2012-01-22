@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar highlightr-web/target/dependency/jetty-runner.jar --port $PORT highlightr-web/target/*.war
+web: java $JAVA_OPTS -Dspring.profiles.active="production" -jar highlightr-web/target/dependency/jetty-runner.jar --port $PORT highlightr-web/target/*.war

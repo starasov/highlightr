@@ -19,6 +19,10 @@ Server Side
     - DZone
     - YCombinator
 
+- Spring profiles
+    - research
+    - integrate
+
 - Summary rankModel calculation method
     - Handle ranks individually, so we could identify rankModel per rankModel (RSS feed in our case):
         - Statistics for individual rankModel could differ from other ranks, i.e. one rankModel could be more popular in twitter
