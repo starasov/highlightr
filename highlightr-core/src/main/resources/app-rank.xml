@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
     <bean id="jsonObjectMapper" class="com.blogpost.starasov.highlightr.context.ObjectMapperFactoryBean"/>
 
@@ -9,11 +9,13 @@
         <constructor-arg value="SHA1"/>
     </bean>
 
-    <bean id="stringSourceIdentifierBuilder" class="com.blogpost.starasov.highlightr.identifier.StringSourceIdentifierBuilder">
+    <bean id="stringSourceIdentifierBuilder"
+          class="com.blogpost.starasov.highlightr.identifier.StringSourceIdentifierBuilder">
         <constructor-arg ref="messageDigestProvider"/>
     </bean>
 
-    <bean id="urlSourceIdentifierBuilder" class="com.blogpost.starasov.highlightr.identifier.UrlSourceIdentifierBuilder">
+    <bean id="urlSourceIdentifierBuilder"
+          class="com.blogpost.starasov.highlightr.identifier.UrlSourceIdentifierBuilder">
         <constructor-arg ref="messageDigestProvider"/>
     </bean>
 
@@ -36,13 +38,15 @@
 
     <bean id="googlePlusUrlRank" class="com.blogpost.starasov.highlightr.rank.google.PlusOneRankFinder">
         <constructor-arg name="restTemplate" ref="restTemplate"/>
-        <constructor-arg name="urlTemplate" value='https://clients6.google.com/rpc?key=AIzaSyCKSbrvQasunBoV16zDH9R33D88CeLr9gQ'/>
+        <constructor-arg name="urlTemplate"
+                         value='https://clients6.google.com/rpc?key=AIzaSyCKSbrvQasunBoV16zDH9R33D88CeLr9gQ'/>
         <constructor-arg name="urlSourceIdentifierBuilder" ref="urlSourceIdentifierBuilder"/>
     </bean>
 
     <bean id="twitterUrlRank" class="com.blogpost.starasov.highlightr.rank.twitter.TwitterUrlRankFinder">
         <constructor-arg name="restTemplate" ref="restTemplate"/>
-        <constructor-arg name="urlTemplate" value='http://urls.api.twitter.com/1/urls/count.json?url={url}&amp;callback=highlightr"'/>
+        <constructor-arg name="urlTemplate"
+                         value='http://urls.api.twitter.com/1/urls/count.json?url={url}&amp;callback=highlightr"'/>
         <constructor-arg name="urlSourceIdentifierBuilder" ref="urlSourceIdentifierBuilder"/>
     </bean>
 
@@ -57,14 +61,7 @@
     <bean id="nullRank" class="com.blogpost.starasov.highlightr.rank.NullRankFinder"/>
 
     <bean id="urlAggregateRankFinder" class="com.blogpost.starasov.highlightr.rank.AggregateRankFinder">
-        <constructor-arg name="ranks">
-            <map>
-                <!--<entry key="twitter" value-ref="twitterUrlRank"/>-->
-                <!--<entry key="google" value-ref="googlePlusUrlRank"/>-->
-                <entry key="google" value-ref="nullRank"/>
-                <entry key="twitter" value-ref="nullRank"/>
-            </map>
-        </constructor-arg>
+        <constructor-arg name="ranks" ref="urlRanks"/>
         <constructor-arg name="rankWeights">
             <map>
                 <entry key="twitter" value="1"/>
@@ -75,14 +72,7 @@
     </bean>
 
     <bean id="topicAggregateRankFinder" class="com.blogpost.starasov.highlightr.rank.AggregateRankFinder">
-        <constructor-arg name="ranks">
-            <map>
-                <!--<entry key="twitter" value-ref="twitterTopicRank"/>-->
-                <!--<entry key="digg" value-ref="diggTopicRank"/>-->
-                <entry key="twitter" value-ref="nullRank"/>
-                <entry key="digg" value-ref="nullRank"/>
-            </map>
-        </constructor-arg>
+        <constructor-arg name="ranks" ref="topicRanks"/>
         <constructor-arg name="rankWeights">
             <map>
                 <entry key="twitter" value="1"/>
@@ -91,4 +81,26 @@
         </constructor-arg>
         <constructor-arg name="sourceIdentifierBuilder" ref="stringSourceIdentifierBuilder"/>
     </bean>
+
+    <!--<beans profile="dev">-->
+    <!--<util:map id="urlRanks">-->
+    <!--<entry key="google" value-ref="nullRank"/>-->
+    <!--<entry key="twitter" value-ref="nullRank"/>-->
+    <!--</util:map>-->
+
+    <!--<util:map id="topicRanks">-->
+    <!--<entry key="twitter" value-ref="nullRank"/>-->
+    <!--<entry key="digg" value-ref="nullRank"/>-->
+    <!--</util:map>-->
+    <!--</beans>-->
+
+    <util:map id="urlRanks">
+        <entry key="twitter" value-ref="twitterUrlRank"/>
+        <entry key="google" value-ref="googlePlusUrlRank"/>
+    </util:map>
+
+    <util:map id="topicRanks">
+        <entry key="twitter" value-ref="twitterTopicRank"/>
+        <entry key="digg" value-ref="diggTopicRank"/>
+    </util:map>
 </beans>
