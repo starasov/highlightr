@@ -4,14 +4,13 @@ Highlightr
 Server Side
 -----------
 
-- Heroku database setup:
-    - Finish DataSource setup
-
 - REST API implementation
     - Ability to increase rankModel rankModel using POST/PUT API
     - Ability to retrieve rankModel by topic and URL
+    - Bulk querying
 
 - Multiple handlers for different statistics ranks (@see http://sharedcount.com/documentation.php)
+    - Stream specific ranks
     - Facebook
     - Delicious
     - StumbleUpon
@@ -19,30 +18,16 @@ Server Side
     - DZone
     - YCombinator
 
-- Spring profiles
-    - research
-    - integrate
-
-- Summary rankModel calculation method
-    - Handle ranks individually, so we could identify rankModel per rankModel (RSS feed in our case):
-        - Statistics for individual rankModel could differ from other ranks, i.e. one rankModel could be more popular in twitter
-          than in G+ and completely missing in Facebook. So statistics calculation should be sensitive only for popular.
-
-- "Caching" of retrieved ranks in database:
-    - Check ecache backend.
-
-- Add streams support:
-    - Finalize JPA setup
-    - Add SHA1 calculation for stream id
-    - Add statistics calculation for stream
-    - Add ranks mapping with stream
-
-- Create DAOs:
-    - Check spring-data module
-
-- Create services
+- Caching
 
 Client Side
 -----------
 
 - Chrome extension creation
+    - Packaging
+    - Cleanup sources
+    - Find proper event source(s) for updates
+    - Bulk updates
+    - Icon
+    - Page action status icon
+    - Find a good way to visualize rank
