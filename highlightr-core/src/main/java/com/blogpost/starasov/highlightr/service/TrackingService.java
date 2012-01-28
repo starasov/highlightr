@@ -1,6 +1,7 @@
 package com.blogpost.starasov.highlightr.service;
 
 import com.blogpost.starasov.highlightr.model.Rank;
+import com.blogpost.starasov.highlightr.model.StreamStatistics;
 import com.blogpost.starasov.highlightr.model.Stream;
 import com.blogpost.starasov.highlightr.model.StreamType;
 import org.slf4j.Logger;
@@ -45,12 +46,13 @@ public class TrackingService<S> {
     }
 
     @Transactional(readOnly = true)
-    public int getAverageRankForStream(URL streamUrl) {
+    public StreamStatistics getStreamStatistics(URL streamUrl) {
         Assert.notNull(streamUrl, "streamUrl parameter can't be null.");
 
         String streamIdentifier = Stream.buildIdentifier(streamUrl);
         Stream stream = streamService.findStream(streamIdentifier, streamType);
-        return stream.getAverageRank();
+
+        return stream.getStatistics();
     }
 
     @Required

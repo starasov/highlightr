@@ -1,10 +1,7 @@
 package com.blogpost.starasov.highlightr.controller;
 
 import com.blogpost.starasov.highlightr.model.Rank;
-import com.blogpost.starasov.highlightr.model.Stream;
-import com.blogpost.starasov.highlightr.model.StreamType;
-import com.blogpost.starasov.highlightr.service.RankService;
-import com.blogpost.starasov.highlightr.service.StreamService;
+import com.blogpost.starasov.highlightr.model.StreamStatistics;
 import com.blogpost.starasov.highlightr.service.TrackingService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -20,7 +17,6 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 import java.net.URL;
-import java.util.Date;
 
 /**
  * User: starasov
@@ -43,14 +39,14 @@ public class TopicRankController {
         return new ModelAndView(new MappingJacksonJsonView(), "error", new ErrorModel(ex.getMessage(), request.getRequestURL().toString()));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/avg")
-    public @ResponseBody Object getAverageUrlRankForStream(@RequestParam(value = "stream", required = true) URL streamUrl) {
-        logger.debug("[getAverageUrlRankForStream] - streamUrl: {}", streamUrl);
+    @RequestMapping(method = RequestMethod.GET, value = "/stats")
+    public @ResponseBody Object getTopicStatisticsForStream(@RequestParam(value = "stream", required = true) URL streamUrl) {
+        logger.debug("[getTopicStatisticsForStream] - streamUrl: {}", streamUrl);
 
-        int averageRankForStream = trackingService.getAverageRankForStream(streamUrl);
-        logger.debug("[getAverageUrlRankForStream] - averageRankForStream: {}", averageRankForStream);
+        StreamStatistics streamStatistics = trackingService.getStreamStatistics(streamUrl);
+        logger.debug("[getTopicStatisticsForStream] - streamStatistics: {}", streamStatistics);
 
-        return AvgModel.fromInt(averageRankForStream);
+        return streamStatistics;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/stream")

@@ -27,6 +27,7 @@ public class Stream {
     @Enumerated(EnumType.STRING)
     private StreamType type;
 
+    @OrderBy("rank")
     @OneToMany(mappedBy = "stream", cascade = CascadeType.MERGE)
     private List<Rank> ranks;
 
@@ -80,8 +81,14 @@ public class Stream {
         this.ranks = ranks;
     }
 
-    public int getAverageRank() {
-        return Rank.toAverageRank(ranks);
+    public StreamStatistics getStatistics() {
+        if (ranks.isEmpty()) {
+            return StreamStatistics.EMPTY;
+        }
+
+        int min = ranks.get(0).getRank();
+        int max = ranks.get(ranks.size() - 1).getRank();
+        return new StreamStatistics(Rank.toAverageRank(ranks), min, max);
     }
 
     public boolean hasRank(Rank rank) {

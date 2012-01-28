@@ -1,10 +1,7 @@
 package com.blogpost.starasov.highlightr.controller;
 
 import com.blogpost.starasov.highlightr.model.Rank;
-import com.blogpost.starasov.highlightr.model.Stream;
-import com.blogpost.starasov.highlightr.model.StreamType;
-import com.blogpost.starasov.highlightr.service.RankService;
-import com.blogpost.starasov.highlightr.service.StreamService;
+import com.blogpost.starasov.highlightr.model.StreamStatistics;
 import com.blogpost.starasov.highlightr.service.TrackingService;
 import com.blogpost.starasov.highlightr.util.UrlSanitizer;
 import org.slf4j.Logger;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.net.URL;
-import java.util.Date;
 
 /**
  * User: starasov
@@ -34,14 +30,14 @@ public class UrlRankController {
     @Qualifier("urlTrackingService")
     private TrackingService<URL> trackingService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/avg")
-    public @ResponseBody Object getAverageUrlRankForStream(@RequestParam(value = "stream", required = true) URL streamUrl) {
-        logger.debug("[getAverageUrlRankForStream] - streamUrl: {}", streamUrl);
+    @RequestMapping(method = RequestMethod.GET, value = "/stats")
+    public @ResponseBody Object getUrlStatisticsForStream(@RequestParam(value = "stream", required = true) URL streamUrl) {
+        logger.debug("[getUrlStatisticsForStream] - streamUrl: {}", streamUrl);
 
-        int averageRankForStream = trackingService.getAverageRankForStream(streamUrl);
-        logger.debug("[getAverageUrlRankForStream] - averageRankForStream: {}", averageRankForStream);
+        StreamStatistics streamStatistics = trackingService.getStreamStatistics(streamUrl);
+        logger.debug("[getUrlStatisticsForStream] - streamStatistics: {}", streamStatistics);
 
-        return AvgModel.fromInt(averageRankForStream);
+        return streamStatistics;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/stream")

@@ -39,7 +39,7 @@ public class Rank {
         this.identifier = identifier;
     }
 
-    public static int toAverageRank(List<Rank> ranks) {
+    public static double toAverageRank(List<Rank> ranks) {
         Assert.notNull(ranks, "ranks parameter can't be null.");
 
         SummaryStatistics statistics = new SummaryStatistics();
@@ -47,7 +47,7 @@ public class Rank {
             statistics.addValue(rank.getRank());
         }
 
-        return (int) statistics.getMean();
+        return statistics.getMean();
     }
 
     public Long getId() {
@@ -76,7 +76,8 @@ public class Rank {
 
     public boolean isUpToDate(Date date) {
         Assert.notNull(date, "date parameter can't be null.");
-        return timestamp != null && date.getTime() - timestamp.getTime() < 1000 * 60 * 60;
+        int hours = 1000 * 60 * 60;
+        return timestamp != null && date.getTime() - timestamp.getTime() < hours * 24;
     }
 
     public String getIdentifier() {
