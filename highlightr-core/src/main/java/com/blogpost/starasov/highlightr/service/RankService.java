@@ -28,15 +28,6 @@ public class RankService<S> {
     private SourceIdentifierBuilder<S> identifierBuilder;
 
     @Transactional(readOnly = true)
-    public Rank findAverageRank(S source) {
-        Assert.notNull(source, "source parameter can't be null.");
-        String identifier = identifierBuilder.build(source);
-
-        List<Rank> ranks = rankRepository.findByIdentifier(identifier);
-        return new Rank(Rank.toAverageRank(ranks), identifier);
-    }
-
-    @Transactional(readOnly = true)
     public Rank findRank(S source, String streamIdentifier, StreamType streamType) {
         Assert.notNull(source, "source parameter can't be null.");
 
