@@ -1,0 +1,30 @@
+<project name="highlightr-chrome" default="package" basedir=".">
+    <property name="chrome.executable" location="C:\Users\starasov\AppData\Local\Google\Chrome\Application\chrome.exe"/>
+    <property name="extension.key.file" location="highlightr-chrome.pem"/>
+
+    <property name="extension.name" value="${ant.project.name}"/>
+    <property name="extension.target.path" location="target/${extension.name}"/>
+
+    <target name="clean">
+        <delete dir="target"/>
+    </target>
+
+    <target name="copy" depends="clean">
+        <mkdir dir="target"/>
+        <mkdir dir="target/${extension.name}"/>
+
+        <copy todir="target/${extension.name}">
+            <fileset dir="src">
+                <include name="**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="package" depends="copy">
+        <exec executable="${chrome.executable}">
+            <arg value="--pack-extension=${extension.target.path}"/>
+            <arg value="--pack-extension-key=${extension.key.file}"/>
+            <arg value="--no-message-box"/>
+        </exec>
+    </target>
+</project>

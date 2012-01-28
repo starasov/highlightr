@@ -1,0 +1,28 @@
+{
+    "name": "Highlightr",
+    "version": "1.0",
+    "description": "Highlightr Client",
+
+    "content_scripts": [
+        {
+            "matches": [
+                "http://www.google.com/reader/*",
+                "https://www.google.com/reader/*"
+            ],
+
+            "js": ["jquery-1.7.1.min.js", "contentscript.js"],
+            "run_at": "document_start"
+        }
+    ],
+
+    "permissions": [
+        "http://*/*",
+        "https://*/*",
+        "tabs"
+    ],
+
+    "icons" : {
+        "48" : "icon-48.png",
+        "128" : "icon-128.png"
+    }
+}
