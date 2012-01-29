@@ -1,14 +1,8 @@
-var busy = false;
 var streams = {};
 var extensionUrl = chrome.extension.getURL("");
+var highlightrServiceUrl = "http://high.herokuapp.com";
 
 console.log("highlightr-cs-init: " + extensionUrl);
-
-function createBridge() {
-    var script = document.createElement("div");
-    var parent = document.documentElement;
-    parent.appendChild(script);
-}
 
 function injectScript(file) {
     var script = document.createElement("script");
@@ -38,23 +32,9 @@ function parseUrlFromStream(stream) {
     return stream;
 }
 
-function getStream(streamId) {
-    var stream = streams[streamId];
-    if (!stream) {
-        stream = {};
-        streams[streamId] = stream;
-    }
-
-    return stream;
-}
-
-function updateStatus(streamId, targetUrl, status) {
-    getStream(streamId)[targetUrl] = status;
-}
-
 function retrieveStream(streamId) {
     if (!streams[streamId].avg) {
-        $.get("http://localhost:8080/api/rank/url/stats", {"stream": streamId}, function(data, textStatus) {
+        $.get(highlightrServiceUrl + "/api/rank/url/stats", {"stream": streamId}, function(data, textStatus) {
             console.log("[retrieveStream][success] data: " + data + ", textStatus: " + textStatus);
             streams[streamId].stats = data;
             retrieveRanks(streamId);
@@ -67,7 +47,7 @@ function retrieveStream(streamId) {
 function retrieveRanks(streamId) {
     jQuery.each(streams[streamId].items, function(id, item) {
         if (item.status == 'pending') {
-            $.get("http://localhost:8080/api/rank/url/stream", {"stream": streamId, "query": id}, function(data, textStatus) {
+            $.get(highlightrServiceUrl + "/api/rank/url/stream", {"stream": streamId, "query": id}, function(data, textStatus) {
                 console.log("[retrieveRanks][success] data: " + data.rank + ",- textStatus: " + textStatus);
                 item.status = 'ok';
                 item.rank = data.rank;
@@ -129,31 +109,6 @@ function updateStream(feedRawData) {
 
     return streamId;
 }
-
-function handlePending(streamId) {
-    console.log("streamId: " + streamId);
-//    $("#entries > div.entry").each(function() {
-//        var streamId = $("#chrome-title > a").attr("href");
-//        var targetUrl = $("a.entry-original", this).attr("href");
-//        if (isUrl(streamId) && isUrl(targetUrl)) {
-//            var stream = getStream(streamId);
-//            var rank = stream[targetUrl];
-//            if (rank == undefined) {
-//                stream[targetUrl] = 'pending';
-//                retrieveRank(this, streamId, targetUrl);
-//            }
-//        }
-//    });
-}
-
-
-//$("#entries").bind("DOMSubtreeModified", function() {
-//    if (!busy) {
-//        busy = true;
-//        handleModification();
-//        busy = false;
-//    }
-//});
 
 injectScript('xhr.js');
 
