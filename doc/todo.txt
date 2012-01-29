@@ -24,10 +24,5 @@ Client Side
 -----------
 
 - Chrome extension creation
-    - Packaging
-    - Cleanup sources
-    - Find proper event source(s) for updates
+    - Packaging and distribution
     - Bulk updates
-    - Icon
-    - Page action status icon
-    - Find a good way to visualize rank
