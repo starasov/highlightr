@@ -26,3 +26,5 @@ Client Side
 - Chrome extension creation
     - Packaging and distribution
     - Bulk updates
+    - Performance
+    -
