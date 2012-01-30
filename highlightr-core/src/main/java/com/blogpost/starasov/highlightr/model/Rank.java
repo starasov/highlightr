@@ -74,12 +74,6 @@ public class Rank {
         this.timestamp = timestamp;
     }
 
-    public boolean isUpToDate(Date date) {
-        Assert.notNull(date, "date parameter can't be null.");
-        int hours = 1000 * 60 * 60;
-        return timestamp != null && date.getTime() - timestamp.getTime() < hours * 24;
-    }
-
     public String getIdentifier() {
         return identifier;
     }

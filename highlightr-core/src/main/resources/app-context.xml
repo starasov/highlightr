@@ -3,31 +3,31 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-                           http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+                           http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <cache:annotation-driven/>
 
     <context:component-scan base-package="com.blogpost.starasov.highlightr"/>
 
     <jpa:repositories base-package="com.blogpost.starasov.highlightr.repository"/>
 
-    <bean id="topicRankService" class="com.blogpost.starasov.highlightr.service.RankService">
-        <property name="identifierBuilder" ref="stringSourceIdentifierBuilder"/>
-        <property name="rankFinder" ref="topicAggregateRankFinder"/>
-    </bean>
+    <bean id="cacheStoreFactoryBean" class="com.blogpost.starasov.highlightr.cache.CacheBuilderConcurrentMapCacheFactoryBean"/>
 
-    <bean id="urlRankService" class="com.blogpost.starasov.highlightr.service.RankService">
-        <property name="identifierBuilder" ref="urlSourceIdentifierBuilder"/>
-        <property name="rankFinder" ref="urlAggregateRankFinder"/>
-    </bean>
-
-    <bean id="topicTrackingService" class="com.blogpost.starasov.highlightr.service.TrackingService">
-        <property name="rankService" ref="topicRankService"/>
-        <property name="streamType" value="TOPIC"/>
-    </bean>
-
-    <bean id="urlTrackingService" class="com.blogpost.starasov.highlightr.service.TrackingService">
-        <property name="rankService" ref="urlRankService"/>
-        <property name="streamType" value="URL"/>
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="default"/>
+                    <property name="store" ref="cacheStoreFactoryBean"/>
+                </bean>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="tracking"/>
+                    <property name="store" ref="cacheStoreFactoryBean"/>
+                </bean>
+            </set>
+        </property>
     </bean>
 </beans>

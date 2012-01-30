@@ -19,6 +19,7 @@
                 classpath:app-context.xml
                 classpath:app-persistence.xml
                 classpath:app-rank.xml
+                classpath:app-service.xml
                 classpath:app-transformer.xml
                 /WEB-INF/spring/web-context.xml
             </param-value>

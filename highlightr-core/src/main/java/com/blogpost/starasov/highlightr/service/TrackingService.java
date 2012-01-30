@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -27,22 +28,22 @@ public class TrackingService<S> {
     private StreamService streamService;
     private StreamType streamType;
 
+    @Cacheable(value="tracking")
     public Rank trackSource(S source, URL streamUrl) {
         Assert.notNull(source, "source parameter can't be null.");
         Assert.notNull(streamUrl, "streamUrl parameter can't be null.");
 
+        logger.debug("[trackSource] - source: {}, streamUrl: {}", source, streamUrl);
+
         String streamIdentifier = Stream.buildIdentifier(streamUrl);
-        Rank rank = rankService.findRank(source, streamIdentifier, streamType);
-        if (!rank.isUpToDate(new Date())) {
-            logger.debug("[trackSource] - rank is out of date.");
+        Rank existingRank = rankService.findRank(source, streamIdentifier, streamType);
 
-            Rank newRank = rankService.fetchRank(source);
-            rank.update(newRank);
+        Rank newRank = rankService.fetchRank(source);
+        existingRank.update(newRank);
 
-            streamService.updateStream(streamIdentifier, streamType, rank);
-        }
+        streamService.updateStream(streamIdentifier, streamType, existingRank);
 
-        return rank;
+        return existingRank;
     }
 
     @Transactional(readOnly = true)
