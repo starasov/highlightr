@@ -1,29 +1,30 @@
-console.log("xhr - init");
+var debug = false;
+
+debug && console.log("xhr - init");
 
 var _XMLHttpRequest = XMLHttpRequest;
 window.XMLHttpRequest = function() {
-    console.log("xhr - created");
+    debug && console.log("xhr - created");
 
     var xhr = new _XMLHttpRequest();
     var activeUrl = null;
 
     var _open = xhr.open;
     xhr.open = function(method, url, async, user, password) {
-        console.log("xhr - open - " + url);
+        debug && console.log("xhr - open - " + url);
         activeUrl = url;
         _open.apply(xhr, arguments);
     };
 
     var _send = xhr.send;
     xhr.send = function() {
-        console.log("xhr - send");
+        debug && console.log("xhr - send");
 
         var _onreadystatechange = xhr.onreadystatechange;
         if (_onreadystatechange) {
             xhr.onreadystatechange = function() {
-                _onreadystatechange.apply(xhr, arguments);
                 if (xhr.readyState == 4) {
-                    console.log("xhr - done - firing event");
+                    debug && console.log("xhr - done - firing event");
 
                     var event = document.createEvent('Events');
                     event.initEvent('HighlightrXhr', true, true);
@@ -35,6 +36,8 @@ window.XMLHttpRequest = function() {
 
                     element.dispatchEvent(event);
                 }
+
+                _onreadystatechange.apply(xhr, arguments);
             };
         }
 
