@@ -18,7 +18,9 @@ Server Side
     - DZone
     - YCombinator
 
-- Caching
+- Caching:
+    - Cache invalidation times should be different for different caches (tracking vs transforming vs statistics)
+
 - Logging configuration and level checks
 
 Client Side
