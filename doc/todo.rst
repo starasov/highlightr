@@ -19,6 +19,7 @@ Server Side
     - YCombinator
 
 - Caching
+- Logging configuration and level checks
 
 Client Side
 -----------
@@ -27,4 +28,3 @@ Client Side
     - Packaging and distribution
     - Bulk updates
     - Performance
-    -

@@ -31,4 +31,32 @@ public class UrlSanitizerTest {
         URL url = UrlSanitizer.sanitize(new URL("http://www.google.com/docs/index.html"));
         assertThat(url.toString(), is("http://www.google.com/docs/index.html/"));
     }
+
+    @Test
+    public void shouldCleanupUrlWithQueryParameters() throws MalformedURLException {
+        URL url = new URL("http://java.dzone.com/articles/assignment-algorithms-improve?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+javalobby%2Ffrontpage+%28Javalobby+%2F+Java+Zone%29");
+        URL cleanedUrl = UrlSanitizer.cleanQuery(url);
+        assertThat(cleanedUrl.toString(), is("http://java.dzone.com/articles/assignment-algorithms-improve/"));
+    }
+
+    @Test
+    public void shouldCleanupUrlWithoutQueryParameters() throws MalformedURLException {
+        URL url = new URL("http://java.dzone.com/articles/assignment-algorithms-improve");
+        URL cleanedUrl = UrlSanitizer.cleanQuery(url);
+        assertThat(cleanedUrl.toString(), is("http://java.dzone.com/articles/assignment-algorithms-improve/"));
+    }
+
+    @Test
+    public void shouldCleanupUrlWithPort() throws MalformedURLException {
+        URL url = new URL("http://java.dzone.com:8080/articles/assignment-algorithms-improve");
+        URL cleanedUrl = UrlSanitizer.cleanQuery(url);
+        assertThat(cleanedUrl.toString(), is("http://java.dzone.com:8080/articles/assignment-algorithms-improve/"));
+    }
+
+    @Test
+    public void shouldCleanupUrlWithProtocol() throws MalformedURLException {
+        URL url = new URL("https://java.dzone.com/articles/assignment-algorithms-improve");
+        URL cleanedUrl = UrlSanitizer.cleanQuery(url);
+        assertThat(cleanedUrl.toString(), is("https://java.dzone.com/articles/assignment-algorithms-improve/"));
+    }
 }

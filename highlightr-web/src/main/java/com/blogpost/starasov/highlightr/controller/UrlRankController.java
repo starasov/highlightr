@@ -3,7 +3,8 @@ package com.blogpost.starasov.highlightr.controller;
 import com.blogpost.starasov.highlightr.model.Rank;
 import com.blogpost.starasov.highlightr.model.StreamStatistics;
 import com.blogpost.starasov.highlightr.service.TrackingService;
-import com.blogpost.starasov.highlightr.util.UrlSanitizer;
+import com.blogpost.starasov.highlightr.transform.Transformer;
+import com.blogpost.starasov.highlightr.transform.TransformerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class UrlRankController {
     @Qualifier("urlTrackingService")
     private TrackingService<URL> trackingService;
 
+    @Autowired
+    private Transformer<URL> urlTransformer;
+
     @RequestMapping(method = RequestMethod.GET, value = "/stats")
     public @ResponseBody Object getUrlStatisticsForStream(@RequestParam(value = "stream", required = true) URL streamUrl) {
         logger.debug("[getUrlStatisticsForStream] - streamUrl: {}", streamUrl);
@@ -42,11 +46,11 @@ public class UrlRankController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/stream")
     public @ResponseBody Object getUrlRankForStream(@RequestParam(value = "stream", required = true) URL streamUrl,
-                                                    @RequestParam(value = "query", required = true) URL query) {
+                                                    @RequestParam(value = "query", required = true) URL query) throws TransformerException {
         logger.trace("[getUrlRankForStream] - streamUrl: {}, query: {}", streamUrl, query);
 
-        URL sanitizedQuery = UrlSanitizer.sanitize(query);
-        Rank rank = trackingService.trackSource(sanitizedQuery, streamUrl);
+        URL targetQuery = urlTransformer.transform(query);
+        Rank rank = trackingService.trackSource(targetQuery, streamUrl);
         logger.debug("[getUrlRankForStream] - rank: {}", rank);
 
         return new RankModel(rank.getRank());
