@@ -1,6 +1,7 @@
-var debug = false;
+var debug = true;
 
 var streams = {};
+
 var activeStreamId = null;
 
 var extensionUrl = chrome.extension.getURL("");
@@ -54,8 +55,8 @@ function retrieveRanks(streamId) {
         if (item.status == 'pending') {
             $.get(highlightrServiceUrl + "/api/rank/url/stream", {"stream": streamId, "query": id}, function(data, textStatus) {
                 debug && console.log("[retrieveRanks][success] data: " + data.rank + ",- textStatus: " + textStatus);
-                item.status = 'ok';
                 item.rank = data.rank;
+                item.status = 'ok';
                 updateRank(item);
             });
         } else {
@@ -72,17 +73,18 @@ function updateRank(item) {
         var stream = streams[item.streamId];
         var stats = stream.stats;
 
+        $('span.highlightr', target).remove();
+
         var rankRate = item.rank / stats.avg;
         if (isFinite(rankRate)) {
             if (rankRate >= 2.5) {
-                $(".entry-title", target).append("&nbsp;<span style='-webkit-border-radius: 6px; padding: 4px; width: 20px; height: 20px; background-color: #d14836; font-size: small; color: #ffffff;'>+" + rankRate.toFixed(1) + "</span>");
+                $(".entry-title", target).append("<span class='highlightr' style='-webkit-border-radius: 3px; margin-left 4px; padding: 2px 3px 2px 3px; width: 20px; height: 18px; background-color: #d14836; font-size: small; color: #ffffff;'>" + rankRate.toFixed(1) + "</span>");
             } else if (rankRate < 0.2) {
                 $(".entry-title", target).css('color', "#999999");
+                $(".entry-title-link", target).css('color', "#999999");
             } else if (rankRate >= 1.0) {
-                $(".entry-title", target).append("&nbsp;<span style='-webkit-border-radius: 6px; padding: 4px; width: 20px; height: 20px; border: solid 1px #d14836; font-size: small; color: #d14836;'>+" + rankRate.toFixed(1) + "</span>");
+                $(".entry-title", target).append("<span class='highlightr' style='-webkit-border-radius: 3px; margin-left 4px; padding: 2px 3px 2px 3px; width: 20px; height: 18px; border: solid 1px #d14836; font-size: small; color: #d14836;'>" + rankRate.toFixed(1) + "</span>");
             }
-        } else {
-            $(".entry-title", target).append("&nbsp;<span style='-webkit-border-radius: 6px; padding: 4px; width: 20px; height: 20px; border: solid 1px #d14836; font-size: small; color: #d14836;'>?</span>");
         }
     }
 }
@@ -114,17 +116,41 @@ function updateStream(feedRawData) {
 
 injectScript('xhr.js');
 
+function updateItemTargetIfNeeded(targetUrl, element) {
+    var stream = streams[activeStreamId];
+    if (stream && targetUrl) {
+        var item = stream.items[targetUrl];
+        item.target = element;
+        if (item.status == 'ok') {
+            updateRank(item);
+        }
+    }
+}
+
+function handleExpandedView(element, activeStreamId) {
+    var locked = false;
+
+    $(element).bind("DOMNodeInserted", function(event) {
+        if (!locked) {
+            locked = true;
+            var targetUrl = $("a.entry-title-link", element).attr("href");
+            debug && console.log("[handleExpandedView][DOMNodeInserted][%s] - %s, targetUrl - %s", activeStreamId, element, targetUrl);
+            updateItemTargetIfNeeded(targetUrl, element);
+            locked = false;
+        }
+    });
+}
+
 $(document).ready(function() {
     $("#entries").bind("DOMNodeInserted", function(event) {
         var element = event.target;
-        if($(element).hasClass('entry')) {
-
+        if ($(element).hasClass('entry')) {
             var targetUrl = $("a.entry-original", element).attr("href");
-            debug && console.log("[DOMNodeInserted][%s] - %s, targetUrl - %s", activeStreamId, element, targetUrl);
-
-            var stream = streams[activeStreamId];
-            if (stream && targetUrl) {
-                stream.items[targetUrl].target = element;
+            if (!targetUrl) {
+                handleExpandedView(element, activeStreamId);
+            } else {
+                debug && console.log("[DOMNodeInserted][%s] - %s, targetUrl - %s", activeStreamId, element, targetUrl);
+                updateItemTargetIfNeeded(targetUrl, element);
             }
         }
     });
@@ -133,15 +159,12 @@ $(document).ready(function() {
 $("#highlightr-bridge").bind("HighlightrXhr", function() {
     debug && console.log("HighlightrXhr - xhr event handled");
 
-    activeStreamId = null;
     var url = localStorage['highlightr.activeUrl'];
     var feedRawData = localStorage['highlightr.response'];
 
     if (isFeedUrl(url) && feedRawData) {
         var streamId = updateStream(feedRawData);
         activeStreamId = streamId;
-
         retrieveStream(streamId);
     }
 });
-

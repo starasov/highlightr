@@ -2,7 +2,6 @@
     "name": "Highlightr",
     "version": "1.0",
     "description": "Highlights popular items in your Google Reader feeds.",
-    "background_page": "background.html",
 
     "page_action":
     {
@@ -15,8 +14,10 @@
     "content_scripts": [
         {
             "matches": [
-                "http://www.google.com/reader/*",
-                "https://www.google.com/reader/*"
+                "*://www.google.com/reader/*",
+                "*://www.google.ca/reader/*",
+                "*://www.google.ru/reader/*",
+                "*://www.google.com.ua/reader/*"
             ],
 
             "js": ["jquery-1.7.1.min.js", "contentscript.js"],
