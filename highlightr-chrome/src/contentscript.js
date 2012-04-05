@@ -1,7 +1,6 @@
 var debug = true;
 
 var streams = {};
-
 var activeStreamId = null;
 
 var extensionUrl = chrome.extension.getURL("");

@@ -48,6 +48,15 @@
         </bean>
     </beans>
 
+    <beans profile="ec2">
+        <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+            <property name="jndiName" value="jdbc/postgres-highlightr"></property>
+            <property name="lookupOnStartup" value="true"></property>
+            <property name="cache" value="true"></property>
+            <property name="proxyInterface" value="javax.sql.DataSource"></property>
+        </bean>
+    </beans>
+
     <beans profile="production">
         <bean class="java.net.URI" id="dbUrl">
             <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>

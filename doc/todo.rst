@@ -18,15 +18,23 @@ Server Side
     - DZone
     - YCombinator
 
-- Caching:
+- Caching
     - Cache invalidation times should be different for different caches (tracking vs transforming vs statistics)
+    - Recent items caching vs old items caching
 
 - Logging configuration and level checks
+
+- Administration
+    - https://github.com/codahale/metrics [?]
+    - Check possible JMX solutions [!]
+    - Simple admin UI
+    - Investigate caching memory leaks [!]
+
 
 Client Side
 -----------
 
 - Chrome extension creation
-    - Packaging and distribution
+    - Packaging and distribution [!]
     - Bulk updates
-    - Performance
+    - Extract styles into separate CSS if it's possible
