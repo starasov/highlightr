@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context>
+<Context reloadable="true">
     <ResourceLink name="jdbc/postgres-highlightr"
                   global="jdbc/postgres-highlightr"
                   type="javax.sql.DataSource"/>
