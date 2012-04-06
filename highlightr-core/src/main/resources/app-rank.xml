@@ -83,16 +83,16 @@
     </bean>
 
     <util:map id="urlRanks">
-        <entry key="twitter" value-ref="nullRank"/>
-        <entry key="google" value-ref="nullRank"/>
-        <!--<entry key="twitter" value-ref="twitterUrlRank"/>-->
-        <!--<entry key="google" value-ref="googlePlusUrlRank"/>-->
+        <!--<entry key="twitter" value-ref="nullRank"/>-->
+        <!--<entry key="google" value-ref="nullRank"/>-->
+        <entry key="twitter" value-ref="twitterUrlRank"/>
+        <entry key="google" value-ref="googlePlusUrlRank"/>
     </util:map>
 
     <util:map id="topicRanks">
-        <entry key="twitter" value-ref="nullRank"/>
-        <entry key="digg" value-ref="nullRank"/>
-        <!--<entry key="twitter" value-ref="twitterTopicRank"/>-->
-        <!--<entry key="digg" value-ref="diggTopicRank"/>-->
+        <!--<entry key="twitter" value-ref="nullRank"/>-->
+        <!--<entry key="digg" value-ref="nullRank"/>-->
+        <entry key="twitter" value-ref="twitterTopicRank"/>
+        <entry key="digg" value-ref="diggTopicRank"/>
     </util:map>
 </beans>

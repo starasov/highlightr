@@ -26,5 +26,7 @@
             <arg value="--pack-extension-key=${extension.key.file}"/>
             <arg value="--no-message-box"/>
         </exec>
+
+        <zip destfile="target/highlightr-chrome.zip" basedir="src" includes="*.*"/>
     </target>
 </project>
