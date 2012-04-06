@@ -60,9 +60,9 @@
     <beans profile="ec2-production">
         <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
             <property name="driverClassName" value="org.postgresql.Driver"/>
-            <property name="url" value="jdbc:postgresql://localhost/highlightr"/>
-            <property name="username" value="#{systemEnvironment['username']}"/>
-            <property name="password" value="#{systemEnvironment['password']}"/>
+            <property name="url" value="#{systemEnvironment['JDBC_URL']}"/>
+            <property name="username" value="#{systemEnvironment['JDBC_USERNAME']}"/>
+            <property name="password" value="#{systemEnvironment['JDBC_PASSWORD']}"/>
         </bean>
     </beans>
 
