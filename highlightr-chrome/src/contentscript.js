@@ -5,8 +5,6 @@ var activeStreamId = null;
 
 var extensionUrl = chrome.extension.getURL("");
 var highlightrServiceUrl = "http://ec2-75-101-239-28.compute-1.amazonaws.com/highlightr";
-//var highlightrServiceUrl = "http://high.herokuapp.com";
-//var highlightrServiceUrl = "http://localhost:8080";
 
 debug && console.log("highlightr-cs-init: " + extensionUrl);
 

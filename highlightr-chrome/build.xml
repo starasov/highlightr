@@ -1,6 +1,6 @@
 <project name="highlightr-chrome" default="package" basedir=".">
-    <property name="chrome.executable" location="C:\Users\starasov\AppData\Local\Google\Chrome\Application\chrome.exe"/>
-    <property name="extension.key.file" location="highlightr-chrome.pem"/>
+    <property name="chrome.executable" location="/usr/bin/chromium-browser"/>
+    <property name="extension.key.file" location="/home/starasov/Spool/highlightr-chrome.pem"/>
 
     <property name="extension.name" value="${ant.project.name}"/>
     <property name="extension.target.path" location="target/${extension.name}"/>
