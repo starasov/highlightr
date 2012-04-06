@@ -57,6 +57,15 @@
         </bean>
     </beans>
 
+    <beans profile="jelastic-production">
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value="org.postgresql.Driver"/>
+            <property name="url" value="#{systemProperties['jdbc.url']}"/>
+            <property name="username" value="#{systemProperties['jdbc.username']}"/>
+            <property name="password" value="#{systemProperties['jdbc.password']}"/>
+        </bean>
+    </beans>
+
 
     <beans profile="production">
         <bean class="java.net.URI" id="dbUrl">
