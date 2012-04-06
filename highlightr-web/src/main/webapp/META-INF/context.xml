@@ -1,6 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/highlightr" docBase="highlightr" debug="1" reloadable="true">
-    <ResourceLink name="jdbc/postgres-highlightr"
-                  global="jdbc/postgres-highlightr"
-                  type="javax.sql.DataSource"/>
 </Context>
