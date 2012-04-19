@@ -1,11 +1,16 @@
 package com.blogpost.starasov.highlightr.model;
 
+import com.google.common.base.Predicate;
 import org.apache.commons.math.stat.descriptive.SummaryStatistics;
 import org.springframework.util.Assert;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
+import static com.google.common.collect.Collections2.filter;
 
 /**
  * User: starasov
@@ -42,12 +47,26 @@ public class Rank {
     public static double toAverageRank(List<Rank> ranks) {
         Assert.notNull(ranks, "ranks parameter can't be null.");
 
-        SummaryStatistics statistics = new SummaryStatistics();
+        SummaryStatistics fullRangeStatistics = calculateStatistics(ranks);
+        final double mean = fullRangeStatistics.getMean();
+        final double standardDeviation = fullRangeStatistics.getStandardDeviation();
+
+        Collection<Rank> filteredRanks = filter(ranks, new Predicate<Rank>() {
+            public boolean apply(@Nullable Rank input) {
+                return input != null && Math.abs(input.getRank() - mean) <= 3 * standardDeviation;
+            }
+        });
+
+        return calculateStatistics(filteredRanks).getMean();
+    }
+
+    private static SummaryStatistics calculateStatistics(Collection<Rank> ranks) {
+        SummaryStatistics summaryStatistics = new SummaryStatistics();
         for (Rank rank : ranks) {
-            statistics.addValue(rank.getRank());
+            summaryStatistics.addValue(rank.getRank());
         }
 
-        return statistics.getMean();
+        return summaryStatistics;
     }
 
     public Long getId() {

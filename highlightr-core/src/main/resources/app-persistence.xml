@@ -39,30 +39,28 @@
     </bean>
 
     <beans profile="dev">
-        <bean id="dataSource"
-              class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-            <property name="driverClassName" value="org.postgresql.Driver"/>
-            <property name="url" value="jdbc:postgresql://localhost:5432/highlightr"/>
-            <property name="username" value="postgres"/>
-            <property name="password" value="admin"/>
-        </bean>
-    </beans>
+        <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+            <property name="driverClass" value="org.postgresql.Driver"/>
+            <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/highlightr"/>
+            <property name="user" value="postgres"/>
+            <property name="password" value="nimda-09"/>
 
-    <beans profile="ec2-production">
-        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-            <property name="driverClassName" value="org.postgresql.Driver"/>
-            <property name="url" value="#{systemEnvironment['JDBC_URL']}"/>
-            <property name="username" value="#{systemEnvironment['JDBC_USERNAME']}"/>
-            <property name="password" value="#{systemEnvironment['JDBC_PASSWORD']}"/>
+            <property name="maxPoolSize" value="5"/>
+            <property name="minPoolSize" value="2"/>
+            <property name="maxIdleTime" value="600"/>
         </bean>
     </beans>
 
     <beans profile="jelastic-production">
-        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-            <property name="driverClassName" value="org.postgresql.Driver"/>
-            <property name="url" value="#{systemProperties['jdbc.url']}"/>
-            <property name="username" value="#{systemProperties['jdbc.username']}"/>
+        <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+            <property name="driverClass" value="org.postgresql.Driver"/>
+            <property name="jdbcUrl" value="#{systemProperties['jdbc.url']}"/>
+            <property name="user" value="#{systemProperties['jdbc.username']}"/>
             <property name="password" value="#{systemProperties['jdbc.password']}"/>
+
+            <property name="maxPoolSize" value="5"/>
+            <property name="minPoolSize" value="2"/>
+            <property name="maxIdleTime" value="600"/>
         </bean>
     </beans>
 

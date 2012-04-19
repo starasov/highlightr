@@ -1,8 +1,8 @@
 package com.blogpost.starasov.highlightr.service;
 
 import com.blogpost.starasov.highlightr.model.Rank;
-import com.blogpost.starasov.highlightr.model.StreamStatistics;
 import com.blogpost.starasov.highlightr.model.Stream;
+import com.blogpost.starasov.highlightr.model.StreamStatistics;
 import com.blogpost.starasov.highlightr.model.StreamType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.net.URL;
-import java.util.Date;
 
 /**
  * User: starasov
@@ -21,6 +20,7 @@ import java.util.Date;
  * Time: 8:23 PM
  */
 
+@Transactional(readOnly = false)
 public class TrackingService<S> {
     private static final Logger logger = LoggerFactory.getLogger(TrackingService.class);
 
@@ -46,14 +46,13 @@ public class TrackingService<S> {
         return existingRank;
     }
 
+    @Cacheable(value="stats")
     @Transactional(readOnly = true)
     public StreamStatistics getStreamStatistics(URL streamUrl) {
         Assert.notNull(streamUrl, "streamUrl parameter can't be null.");
 
         String streamIdentifier = Stream.buildIdentifier(streamUrl);
-        Stream stream = streamService.findStream(streamIdentifier, streamType);
-
-        return stream.getStatistics();
+        return streamService.findStreamStatistics(streamIdentifier, streamType);
     }
 
     @Required

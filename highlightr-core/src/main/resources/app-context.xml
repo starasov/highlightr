@@ -14,18 +14,35 @@
 
     <jpa:repositories base-package="com.blogpost.starasov.highlightr.repository"/>
 
-    <bean id="cacheStoreFactoryBean" class="com.blogpost.starasov.highlightr.cache.CacheBuilderConcurrentMapCacheFactoryBean"/>
+    <bean id="trackingCacheStoreFactoryBean" class="com.blogpost.starasov.highlightr.cache.CacheBuilderConcurrentMapCacheFactoryBean">
+        <constructor-arg name="cacheExpirationInHours" value="4"/>
+        <constructor-arg name="cacheMaximumSize" value="15000"/>
+    </bean>
+
+    <bean id="statsCacheStoreFactoryBean" class="com.blogpost.starasov.highlightr.cache.CacheBuilderConcurrentMapCacheFactoryBean">
+        <constructor-arg name="cacheExpirationInHours" value="1"/>
+        <constructor-arg name="cacheMaximumSize" value="5000"/>
+    </bean>
+
+    <bean id="defaultCacheStoreFactoryBean" class="com.blogpost.starasov.highlightr.cache.CacheBuilderConcurrentMapCacheFactoryBean">
+        <constructor-arg name="cacheExpirationInHours" value="24"/>
+        <constructor-arg name="cacheMaximumSize" value="15000"/>
+    </bean>
 
     <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
         <property name="caches">
             <set>
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
                     <property name="name" value="default"/>
-                    <property name="store" ref="cacheStoreFactoryBean"/>
+                    <property name="store" ref="defaultCacheStoreFactoryBean"/>
                 </bean>
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
                     <property name="name" value="tracking"/>
-                    <property name="store" ref="cacheStoreFactoryBean"/>
+                    <property name="store" ref="trackingCacheStoreFactoryBean"/>
+                </bean>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="stats"/>
+                    <property name="store" ref="statsCacheStoreFactoryBean"/>
                 </bean>
             </set>
         </property>

@@ -40,4 +40,31 @@ public class StreamStatistics {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StreamStatistics that = (StreamStatistics) o;
+
+        if (Double.compare(that.avg, avg) != 0) return false;
+        if (Double.compare(that.max, max) != 0) return false;
+        if (Double.compare(that.min, min) != 0) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = avg != +0.0d ? Double.doubleToLongBits(avg) : 0L;
+        result = (int) (temp ^ (temp >>> 32));
+        temp = min != +0.0d ? Double.doubleToLongBits(min) : 0L;
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = max != +0.0d ? Double.doubleToLongBits(max) : 0L;
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 }

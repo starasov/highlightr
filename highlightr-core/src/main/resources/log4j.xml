@@ -10,19 +10,19 @@
     </appender>
 
     <logger name="org.springframework.beans">
-        <level value="info"/>
+        <level value="warn"/>
     </logger>
 
     <logger name="org.springframework.core">
-        <level value="info"/>
+        <level value="warn"/>
     </logger>
 
     <logger name="org.springframework.context">
-        <level value="info"/>
+        <level value="warn"/>
     </logger>
 
     <logger name="com.blogpost.starasov">
-        <level value="trace"/>
+        <level value="warn"/>
     </logger>
 
     <root>
