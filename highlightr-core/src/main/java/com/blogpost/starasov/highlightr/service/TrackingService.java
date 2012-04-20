@@ -46,7 +46,6 @@ public class TrackingService<S> {
         return existingRank;
     }
 
-    @Cacheable(value="stats")
     @Transactional(readOnly = true)
     public StreamStatistics getStreamStatistics(URL streamUrl) {
         Assert.notNull(streamUrl, "streamUrl parameter can't be null.");
