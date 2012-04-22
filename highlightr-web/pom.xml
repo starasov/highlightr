@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.blogpost.starasov</groupId>
         <artifactId>highlightr</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.blogpost.starasov</groupId>
             <artifactId>highlightr-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- Servlet -->
@@ -92,6 +92,19 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.jelastic</groupId>
+                <artifactId>jelastic-maven-plugin</artifactId>
+                <version>1.7-SNAPSHOT</version>
+                <configuration>
+                    <email>${jelastic.username}</email>
+                    <password>${jelastic.password}</password>
+                    <context>ROOT</context>
+                    <environment>highlightr</environment>
+                    <api_hoster>app.jelastic.dogado.eu</api_hoster>
+                </configuration>
             </plugin>
         </plugins>
     </build>
