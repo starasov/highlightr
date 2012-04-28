@@ -81,14 +81,15 @@ public class Stream {
         this.ranks = ranks;
     }
 
-    public StreamStatistics getStatistics() {
+    public Statistics getStatistics() {
         if (ranks.isEmpty()) {
-            return StreamStatistics.EMPTY;
+            return Statistics.EMPTY;
         }
 
         int min = ranks.get(0).getRank();
         int max = ranks.get(ranks.size() - 1).getRank();
-        return new StreamStatistics(Rank.toAverageRank(ranks), min, max);
+
+        return new Statistics(Rank.toAverageRank(ranks), min, max);
     }
 
     public boolean hasRank(Rank rank) {

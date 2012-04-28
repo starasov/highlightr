@@ -4,7 +4,8 @@ var streams = {};
 var activeStreamId = null;
 
 var extensionUrl = chrome.extension.getURL("");
-var highlightrServiceUrl = "http://highlightr.jelastic.dogado.eu";
+//var highlightrServiceUrl = "http://highlightr.jelastic.dogado.eu";
+var highlightrServiceUrl = "http://localhost:8080";
 
 debug && console.log("highlightr-cs-init: " + extensionUrl);
 

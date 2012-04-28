@@ -1,70 +1,27 @@
 package com.blogpost.starasov.highlightr.model;
 
+import org.springframework.util.Assert;
+
 /**
- * User: starasov
- * Date: 1/25/12
- * Time: 10:31 PM
+ * @author starasov
  */
 public class StreamStatistics {
-    public static final StreamStatistics EMPTY = new StreamStatistics(0.0, 0.0, 0.0);
+    private final Stream stream;
+    private final Statistics statistics;
 
-    private final double avg;
-    private final double min;
-    private final double max;
+    public StreamStatistics(Stream stream, Statistics statistics) {
+        Assert.notNull(stream, "stream parameter can't be null.");
+        Assert.notNull(statistics, "statistics parameter can't be null.");
 
-    public StreamStatistics(double avg, double min, double max) {
-        this.avg = avg;
-        this.min = min;
-        this.max = max;
+        this.stream = stream;
+        this.statistics = statistics;
     }
 
-    public double getAvg() {
-        return avg;
+    public Stream getStream() {
+        return stream;
     }
 
-    public double getMin() {
-        return min;
-    }
-
-    public double getMax() {
-        return max;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("StreamStatistics");
-        sb.append("{avg=").append(avg);
-        sb.append(", min=").append(min);
-        sb.append(", max=").append(max);
-        sb.append('}');
-        return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        StreamStatistics that = (StreamStatistics) o;
-
-        if (Double.compare(that.avg, avg) != 0) return false;
-        if (Double.compare(that.max, max) != 0) return false;
-        if (Double.compare(that.min, min) != 0) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        temp = avg != +0.0d ? Double.doubleToLongBits(avg) : 0L;
-        result = (int) (temp ^ (temp >>> 32));
-        temp = min != +0.0d ? Double.doubleToLongBits(min) : 0L;
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = max != +0.0d ? Double.doubleToLongBits(max) : 0L;
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
+    public Statistics getStatistics() {
+        return statistics;
     }
 }

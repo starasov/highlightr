@@ -1,8 +1,8 @@
 package com.blogpost.starasov.highlightr.service;
 
 import com.blogpost.starasov.highlightr.model.Rank;
+import com.blogpost.starasov.highlightr.model.Statistics;
 import com.blogpost.starasov.highlightr.model.Stream;
-import com.blogpost.starasov.highlightr.model.StreamStatistics;
 import com.blogpost.starasov.highlightr.model.StreamType;
 import com.blogpost.starasov.highlightr.repository.RankRepository;
 import com.blogpost.starasov.highlightr.repository.StreamRepository;
@@ -69,7 +69,7 @@ public class StreamService {
         return resultingStream;
     }
 
-    public StreamStatistics findStreamStatistics(final String streamIdentifier, final StreamType type) {
+    public Statistics findStreamStatistics(final String streamIdentifier, final StreamType type) {
         Assert.notNull(streamIdentifier, "streamIdentifier parameter can't be null.");
         Assert.notNull(type, "type parameter can't be null.");
 
@@ -89,7 +89,7 @@ public class StreamService {
         double maxRank = ranks.isEmpty() ? 0.0 : ranks.get(0).getRank();
         double minRank = ranks.isEmpty() ? 0.0 : ranks.get(ranks.size() - 1).getRank();
 
-        return new StreamStatistics(averageRank, minRank, maxRank);
+        return new Statistics(averageRank, minRank, maxRank);
 
     }
 

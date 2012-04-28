@@ -2,7 +2,7 @@ package com.blogpost.starasov.highlightr.service;
 
 import com.blogpost.starasov.highlightr.model.Rank;
 import com.blogpost.starasov.highlightr.model.Stream;
-import com.blogpost.starasov.highlightr.model.StreamStatistics;
+import com.blogpost.starasov.highlightr.model.Statistics;
 import com.blogpost.starasov.highlightr.model.StreamType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class TrackingService<S> {
     }
 
     @Transactional(readOnly = true)
-    public StreamStatistics getStreamStatistics(URL streamUrl) {
+    public Statistics getStreamStatistics(URL streamUrl) {
         Assert.notNull(streamUrl, "streamUrl parameter can't be null.");
 
         String streamIdentifier = Stream.buildIdentifier(streamUrl);

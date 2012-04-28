@@ -1,4 +1,4 @@
-package com.blogpost.starasov.highlightr.controller;
+package com.blogpost.starasov.highlightr.controller.api;
 
 import com.blogpost.starasov.highlightr.model.Rank;
 

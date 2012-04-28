@@ -1,7 +1,7 @@
-package com.blogpost.starasov.highlightr.controller;
+package com.blogpost.starasov.highlightr.controller.api;
 
 import com.blogpost.starasov.highlightr.model.Rank;
-import com.blogpost.starasov.highlightr.model.StreamStatistics;
+import com.blogpost.starasov.highlightr.model.Statistics;
 import com.blogpost.starasov.highlightr.service.TrackingService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -43,10 +43,10 @@ public class TopicRankController {
     public @ResponseBody Object getTopicStatisticsForStream(@RequestParam(value = "stream", required = true) URL streamUrl) {
         logger.debug("[getTopicStatisticsForStream] - streamUrl: {}", streamUrl);
 
-        StreamStatistics streamStatistics = trackingService.getStreamStatistics(streamUrl);
-        logger.debug("[getTopicStatisticsForStream] - streamStatistics: {}", streamStatistics);
+        Statistics statistics = trackingService.getStreamStatistics(streamUrl);
+        logger.debug("[getTopicStatisticsForStream] - statistics: {}", statistics);
 
-        return streamStatistics;
+        return statistics;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/stream")
