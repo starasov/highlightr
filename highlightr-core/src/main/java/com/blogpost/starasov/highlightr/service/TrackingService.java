@@ -47,6 +47,7 @@ public class TrackingService<S> {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value="tracking")
     public Statistics getStreamStatistics(URL streamUrl) {
         Assert.notNull(streamUrl, "streamUrl parameter can't be null.");
 
