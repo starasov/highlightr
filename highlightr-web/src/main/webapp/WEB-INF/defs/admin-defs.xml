@@ -14,8 +14,8 @@
         <put-attribute name="body" value="/WEB-INF/jsp/admin/cache/index.jsp"/>
     </definition>
 
-    <definition name="admin-stream-index" template="/WEB-INF/jsp/layouts/adminLayout.jsp">
+    <definition name="admin-stream-alert-index" template="/WEB-INF/jsp/layouts/adminLayout.jsp">
         <put-attribute name="title" value="Highlightr Administration - Stream Monitoring"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/admin/stream/index.jsp"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/admin/streamAlert/index.jsp"/>
     </definition>
 </tiles-definitions>

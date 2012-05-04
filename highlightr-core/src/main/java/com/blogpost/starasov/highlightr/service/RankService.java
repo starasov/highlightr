@@ -19,6 +19,7 @@ import java.util.List;
  * Date: 1/11/12
  * Time: 7:19 PM
  */
+@Transactional
 public class RankService<S> {
 
     @Autowired

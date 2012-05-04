@@ -1,6 +1,6 @@
 {
     "name": "Highlightr",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Highlights popular items in your Google Reader feeds.",
 
     "content_scripts": [

@@ -6,6 +6,7 @@ import org.springframework.util.Assert;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ import static com.google.common.collect.Collections2.filter;
  * Time: 8:20 PM
  */
 @Entity
-public class Rank {
+public class Rank implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
