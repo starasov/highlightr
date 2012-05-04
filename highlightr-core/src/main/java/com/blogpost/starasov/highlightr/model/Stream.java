@@ -4,6 +4,7 @@ import com.blogpost.starasov.highlightr.util.UrlSanitizer;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"identifier", "type"}))
-public class Stream {
+public class Stream implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
