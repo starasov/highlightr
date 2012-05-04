@@ -19,7 +19,7 @@ public class AggregateTransformer<S> implements Transformer<S> {
         this.transformers = transformers;
     }
 
-    @Cacheable(value="default")
+    @Cacheable(value="general")
     public S transform(S source) throws TransformerException {
         Transformer<S> transformer = findTransformer(source);
         return transformer.transform(source);

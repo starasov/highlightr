@@ -1,0 +1,37 @@
+<ehcache>
+    <diskStore path="java.io.tmpdir"/>
+
+    <defaultCache
+            name="default"
+            maxElementsInMemory="200"
+            eternal="false"
+            timeToIdleSeconds="12000"
+            timeToLiveSeconds="12000"
+            overflowToDisk="true"
+            maxElementsOnDisk="30000"
+            diskPersistent="true"
+            diskExpiryThreadIntervalSeconds="6000"
+            memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="general"
+           maxElementsInMemory="200"
+           eternal="false"
+           timeToIdleSeconds="12000"
+           timeToLiveSeconds="12000"
+           overflowToDisk="true"
+           maxElementsOnDisk="30000"
+           diskPersistent="true"
+           diskExpiryThreadIntervalSeconds="6000"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="tracking"
+           maxElementsInMemory="200"
+           eternal="false"
+           timeToIdleSeconds="12000"
+           timeToLiveSeconds="12000"
+           overflowToDisk="true"
+           maxElementsOnDisk="30000"
+           diskPersistent="true"
+           diskExpiryThreadIntervalSeconds="6000"
+           memoryStoreEvictionPolicy="LRU"/>
+</ehcache>

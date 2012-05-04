@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <cache:annotation-driven/>
+
+    <bean id="trackingCacheStoreFactoryBean"
+          class="com.blogpost.starasov.highlightr.cache.CacheBuilderConcurrentMapCacheFactoryBean">
+        <constructor-arg name="cacheExpirationInHours" value="4"/>
+        <constructor-arg name="cacheMaximumSize" value="15000"/>
+    </bean>
+
+    <bean id="statsCacheStoreFactoryBean"
+          class="com.blogpost.starasov.highlightr.cache.CacheBuilderConcurrentMapCacheFactoryBean">
+        <constructor-arg name="cacheExpirationInHours" value="1"/>
+        <constructor-arg name="cacheMaximumSize" value="5000"/>
+    </bean>
+
+    <bean id="defaultCacheStoreFactoryBean"
+          class="com.blogpost.starasov.highlightr.cache.CacheBuilderConcurrentMapCacheFactoryBean">
+        <constructor-arg name="cacheExpirationInHours" value="24"/>
+        <constructor-arg name="cacheMaximumSize" value="15000"/>
+    </bean>
+
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="default"/>
+                    <property name="store" ref="defaultCacheStoreFactoryBean"/>
+                </bean>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="tracking"/>
+                    <property name="store" ref="trackingCacheStoreFactoryBean"/>
+                </bean>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="stats"/>
+                    <property name="store" ref="statsCacheStoreFactoryBean"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
+</beans>
