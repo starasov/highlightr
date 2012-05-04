@@ -3,7 +3,7 @@
 
     <defaultCache
             name="default"
-            maxElementsInMemory="200"
+            maxElementsInMemory="100"
             eternal="false"
             timeToIdleSeconds="12000"
             timeToLiveSeconds="12000"
@@ -14,7 +14,7 @@
             memoryStoreEvictionPolicy="LRU"/>
 
     <cache name="general"
-           maxElementsInMemory="200"
+           maxElementsInMemory="100"
            eternal="false"
            timeToIdleSeconds="12000"
            timeToLiveSeconds="12000"
@@ -25,7 +25,7 @@
            memoryStoreEvictionPolicy="LRU"/>
 
     <cache name="tracking"
-           maxElementsInMemory="200"
+           maxElementsInMemory="100"
            eternal="false"
            timeToIdleSeconds="12000"
            timeToLiveSeconds="12000"
