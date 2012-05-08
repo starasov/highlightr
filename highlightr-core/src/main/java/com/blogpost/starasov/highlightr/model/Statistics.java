@@ -1,11 +1,13 @@
 package com.blogpost.starasov.highlightr.model;
 
+import java.io.Serializable;
+
 /**
  * User: starasov
  * Date: 1/25/12
  * Time: 10:31 PM
  */
-public class Statistics {
+public class Statistics implements Serializable {
     public static final Statistics EMPTY = new Statistics(0.0, 0.0, 0.0);
 
     private final double avg;
