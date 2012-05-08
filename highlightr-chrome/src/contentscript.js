@@ -177,7 +177,7 @@ function handleExpandedView(element, activeStreamId) {
 }
 
 $(document).ready(function() {
-    var html = '<div id="highlight-toggle" role="button" class="goog-inline-block jfk-button jfk-button-standard jfk-button-narrow" tabindex="0" aria-pressed="true" style="-webkit-user-select: none; font-size: 12px; color: #d14836;" title="Turns Highlightr ON and OFF"><img src="' + extensionUrl + '/toggle-icon.png" style="width: 21px; height: 21px;" class="jfk-button-img"></div>';
+    var html = '<div id="highlight-toggle" role="button" class="goog-inline-block jfk-button jfk-button-standard jfk-button-narrow" tabindex="0" aria-pressed="true" style="-webkit-user-select: none;" title="Turns Highlightr ON and OFF"><img src="' + extensionUrl + '/toggle-icon.png" style="width: 21px; height: 21px;" class="jfk-button-img"></div>';
     $('#stream-view-options-container').prepend(html);
     $('#highlight-toggle').click(toggleHighlightr).hover(function() {
         $(this).toggleClass('jfk-button-hover');
