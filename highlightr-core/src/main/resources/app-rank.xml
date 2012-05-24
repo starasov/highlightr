@@ -46,7 +46,7 @@
     <bean id="twitterUrlRank" class="com.blogpost.starasov.highlightr.rank.twitter.TwitterUrlRankFinder">
         <constructor-arg name="restTemplate" ref="restTemplate"/>
         <constructor-arg name="urlTemplate"
-                         value='http://urls.api.twitter.com/1/urls/count.json?url={url}&amp;callback=highlightr"'/>
+                         value='http://urls.api.twitter.com/1/urls/count.json?url={url}"'/>
         <constructor-arg name="urlSourceIdentifierBuilder" ref="urlSourceIdentifierBuilder"/>
     </bean>
 
