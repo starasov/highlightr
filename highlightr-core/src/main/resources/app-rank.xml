@@ -25,12 +25,6 @@
                 <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
                 <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
                     <property name="objectMapper" ref="jsonObjectMapper"/>
-                    <property name="supportedMediaTypes">
-                        <list>
-                            <value>application/json</value>
-                            <value>application/javascript</value>
-                        </list>
-                    </property>
                 </bean>
             </list>
         </property>
