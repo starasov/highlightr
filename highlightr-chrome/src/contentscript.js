@@ -4,7 +4,7 @@ var streams = {};
 var activeStreamId = null;
 
 var extensionUrl = chrome.extension.getURL("");
-var highlightrServiceUrl = "http://ec2-23-22-38-192.compute-1.amazonaws.com:8080";
+var highlightrServiceUrl = "http://ec2-23-22-38-192.compute-1.amazonaws.com";
 
 debug && console.log("highlightr-cs-init: " + extensionUrl);
 
@@ -15,11 +15,6 @@ function injectScript(file) {
     script.src = extensionUrl + file;
     script.setAttribute("id", "highlightr-bridge");
     parent.appendChild(script);
-}
-
-function isUrl(str) {
-    var http = "http";
-    return str.substring(0, http.length) === http;
 }
 
 function isFeedUrl(str) {
@@ -64,7 +59,7 @@ function retrieveRanks(streamId) {
 }
 
 function updateRank(item) {
-    if (item.target) {
+    if (item.target && isStreamActive(item.streamId)) {
         var target = item.target;
         item.target = null;
 
@@ -78,8 +73,8 @@ function updateRank(item) {
             if (rankRate >= 2.5) {
                 $(".entry-title", target).append("<span class='highlightr' style='-webkit-border-radius: 3px; margin-left: 8px; padding: 2px 3px 2px 3px; width: 20px; height: 18px; background-color: #d14836; font-size: small; color: #ffffff;'>" + rankRate.toFixed(1) + "</span>");
             } else if (rankRate < 0.2) {
-                $(".entry-title", target).css('color', "#999999");
-                $(".entry-title-link", target).css('color', "#999999");
+                $(".entry-title", target).css('color', "#999999").addClass('highlightr-grayed');
+                $(".entry-title-link", target).css('color', "#999999").addClass('highlightr-grayed');
             } else if (rankRate >= 1.0) {
                 $(".entry-title", target).append("<span class='highlightr' style='-webkit-border-radius: 3px; margin-left: 8px; padding: 2px 3px 2px 3px; width: 20px; height: 18px; border: solid 1px #d14836; font-size: small; color: #d14836;'>" + rankRate.toFixed(1) + "</span>");
             }
@@ -112,6 +107,48 @@ function updateStream(feedRawData) {
     return streamId;
 }
 
+function isStreamActive(streamId) {
+    var disabled = localStorage['highlightr/' + streamId + '/disabled'] || 'false';
+    return streamId && disabled == 'false';
+}
+
+function disableStream(streamId) {
+    localStorage['highlightr/' + streamId + '/disabled'] = 'true';
+}
+
+function enableStream(streamId) {
+    localStorage['highlightr/' + streamId + '/disabled'] = 'false';
+}
+
+function updateToggleButtonState() {
+    if (!activeStreamId) {
+        $('#highlight-toggle').addClass('jfk-button-disabled');
+    } else {
+        $('#highlight-toggle').removeClass('jfk-button-disabled');
+    }
+
+    if (isStreamActive(activeStreamId)) {
+        $('#highlight-toggle').addClass('jfk-button-checked');
+    } else {
+        $('#highlight-toggle').removeClass('jfk-button-checked');
+    }
+}
+
+function toggleHighlightr() {
+    if (isStreamActive(activeStreamId)) {
+        disableStream(activeStreamId);
+        $('span.highlightr').css('display', 'none');
+        $('.highlightr-grayed').css('color', '');
+    } else {
+        enableStream(activeStreamId);
+        retrieveStream(activeStreamId);
+        $('span.highlightr').css('display', 'inline');
+        $('.highlightr-grayed').css('color', '#999999');
+    }
+
+    updateToggleButtonState();
+}
+
 injectScript('xhr.js');
 
 function updateItemTargetIfNeeded(targetUrl, element) {
@@ -140,6 +177,12 @@ function handleExpandedView(element, activeStreamId) {
 }
 
 $(document).ready(function() {
+    var html = '<div id="highlight-toggle" role="button" class="goog-inline-block jfk-button jfk-button-standard jfk-button-narrow" tabindex="0" aria-pressed="true" style="-webkit-user-select: none;" title="Turns Highlightr ON and OFF"><img src="' + extensionUrl + '/toggle-icon.png" style="width: 21px; height: 21px;" class="jfk-button-img"></div>';
+    $('#stream-view-options-container').prepend(html);
+    $('#highlight-toggle').click(toggleHighlightr).hover(function() {
+        $(this).toggleClass('jfk-button-hover');
+    });
+
     $("#entries").bind("DOMNodeInserted", function(event) {
         var element = event.target;
         if ($(element).hasClass('entry')) {
@@ -152,6 +195,8 @@ $(document).ready(function() {
             }
         }
     });
+
+    updateToggleButtonState();
 });
 
 $("#highlightr-bridge").bind("HighlightrXhr", function() {
@@ -163,6 +208,11 @@ $("#highlightr-bridge").bind("HighlightrXhr", function() {
     if (isFeedUrl(url) && feedRawData) {
         var streamId = updateStream(feedRawData);
         activeStreamId = streamId;
-        retrieveStream(streamId);
+
+        updateToggleButtonState();
+
+        if (isStreamActive(activeStreamId)) {
+            retrieveStream(streamId);
+        }
     }
 });
