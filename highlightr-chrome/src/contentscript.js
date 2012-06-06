@@ -72,9 +72,6 @@ function updateRank(item) {
         if (isFinite(rankRate)) {
             if (rankRate >= 2.5) {
                 $(".entry-title", target).append("<span class='highlightr' style='-webkit-border-radius: 3px; margin-left: 8px; padding: 2px 3px 2px 3px; width: 20px; height: 18px; background-color: #d14836; font-size: small; color: #ffffff;'>" + rankRate.toFixed(1) + "</span>");
-            } else if (rankRate < 0.2) {
-                $(".entry-title", target).css('color', "#999999").addClass('highlightr-grayed');
-                $(".entry-title-link", target).css('color', "#999999").addClass('highlightr-grayed');
             } else if (rankRate >= 1.0) {
                 $(".entry-title", target).append("<span class='highlightr' style='-webkit-border-radius: 3px; margin-left: 8px; padding: 2px 3px 2px 3px; width: 20px; height: 18px; border: solid 1px #d14836; font-size: small; color: #d14836;'>" + rankRate.toFixed(1) + "</span>");
             }
