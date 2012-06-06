@@ -37,7 +37,7 @@ function retrieveStream(streamId) {
             debug && console.log("[retrieveStream][success] data: " + data + ", textStatus: " + textStatus);
             streams[streamId].stats = data;
             retrieveRanks(streamId);
-        });
+        }, 'json');
     } else {
         retrieveRanks(streamId);
     }
@@ -51,7 +51,7 @@ function retrieveRanks(streamId) {
                 item.rank = data.rank;
                 item.status = 'ok';
                 updateRank(item);
-            });
+            }, 'json');
         } else {
             updateRank(item);
         }
@@ -174,6 +174,10 @@ function handleExpandedView(element, activeStreamId) {
 }
 
 $(document).ready(function() {
+    $.ajaxSetup({
+        'beforeSend': function(xhr) { xhr.setRequestHeader("Accept", "application/json"); }
+    });
+
     var html = '<div id="highlight-toggle" role="button" class="goog-inline-block jfk-button jfk-button-standard jfk-button-narrow" tabindex="0" aria-pressed="true" style="-webkit-user-select: none;" title="Turns Highlightr ON and OFF"><img src="' + extensionUrl + '/toggle-icon.png" style="width: 21px; height: 21px;" class="jfk-button-img"></div>';
     $('#stream-view-options-container').prepend(html);
     $('#highlight-toggle').click(toggleHighlightr).hover(function() {
