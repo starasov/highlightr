@@ -5,6 +5,7 @@ import com.blogpost.starasov.highlightr.model.Rank;
 import com.blogpost.starasov.highlightr.model.Stream;
 import com.blogpost.starasov.highlightr.model.StreamType;
 import com.blogpost.starasov.highlightr.rank.RankFinder;
+import com.blogpost.starasov.highlightr.rank.RankFinderException;
 import com.blogpost.starasov.highlightr.repository.RankRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
@@ -41,9 +42,13 @@ public class RankService<S> {
         return storedRank;
     }
 
-    public Rank fetchRank(S source) {
+    public Rank fetchRank(S source) throws RankServiceException {
         Assert.notNull(source, "source parameter can't be null.");
-        return rankFinder.get(source);
+        try {
+            return rankFinder.get(source);
+        } catch (RankFinderException e) {
+            throw new RankServiceException(e);
+        }
     }
 
     @Required

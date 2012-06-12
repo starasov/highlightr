@@ -82,7 +82,7 @@ public class StreamService {
                         cb.equal(rankRoot.get("stream").get("type"), type),
                         cb.greaterThan(rankRoot.get("timestamp").as(Date.class), lastDate.toDate()));
             }
-        }, new PageRequest(0, 1000, new Sort(Sort.Direction.DESC, "rank")));
+        }, new PageRequest(0, 300, new Sort(Sort.Direction.DESC, "rank")));
 
         List<Rank> ranks = ranksPage.getContent();
         double averageRank = ranks.isEmpty() ? 0.0 : Rank.toAverageRank(ranks);

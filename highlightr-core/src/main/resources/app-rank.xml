@@ -69,6 +69,7 @@
             </map>
         </constructor-arg>
         <constructor-arg name="sourceIdentifierBuilder" ref="urlSourceIdentifierBuilder"/>
+        <constructor-arg name="executorService" ref="executor"/>
     </bean>
 
     <bean id="topicAggregateRankFinder" class="com.blogpost.starasov.highlightr.rank.AggregateRankFinder">
@@ -80,6 +81,7 @@
             </map>
         </constructor-arg>
         <constructor-arg name="sourceIdentifierBuilder" ref="stringSourceIdentifierBuilder"/>
+        <constructor-arg name="executorService" ref="executor"/>
     </bean>
 
     <util:map id="urlRanks">

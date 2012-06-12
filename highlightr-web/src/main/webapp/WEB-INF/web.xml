@@ -40,6 +40,7 @@
                 classpath:app-rank.xml
                 classpath:app-service.xml
                 classpath:app-transformer.xml
+                classpath:app-schedule.xml
                 /WEB-INF/spring/web-context.xml
             </param-value>
         </init-param>

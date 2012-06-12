@@ -3,6 +3,7 @@ package com.blogpost.starasov.highlightr.controller.api;
 import com.blogpost.starasov.highlightr.model.Rank;
 import com.blogpost.starasov.highlightr.model.Statistics;
 import com.blogpost.starasov.highlightr.service.TrackingService;
+import com.blogpost.starasov.highlightr.service.TrackingServiceException;
 import com.blogpost.starasov.highlightr.transform.Transformer;
 import com.blogpost.starasov.highlightr.transform.TransformerException;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public class UrlRankController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/stream")
     public @ResponseBody Object getUrlRankForStream(@RequestParam(value = "stream", required = true) URL streamUrl,
-                                                    @RequestParam(value = "query", required = true) URL query) throws TransformerException {
+                                                    @RequestParam(value = "query", required = true) URL query) throws TransformerException, TrackingServiceException {
         logger.trace("[getUrlRankForStream] - streamUrl: {}, query: {}", streamUrl, query);
 
         URL targetQuery = urlTransformer.transform(query);

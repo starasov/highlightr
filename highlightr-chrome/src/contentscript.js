@@ -4,7 +4,8 @@ var streams = {};
 var activeStreamId = null;
 
 var extensionUrl = chrome.extension.getURL("");
-var highlightrServiceUrl = "http://ec2-23-22-38-192.compute-1.amazonaws.com";
+//var highlightrServiceUrl = "http://ec2-23-22-38-192.compute-1.amazonaws.com";
+var highlightrServiceUrl = "http://localhost:8080";
 
 debug && console.log("highlightr-cs-init: " + extensionUrl);
 

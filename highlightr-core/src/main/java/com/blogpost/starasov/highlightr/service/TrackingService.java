@@ -29,21 +29,25 @@ public class TrackingService<S> {
     private StreamType streamType;
 
     @Cacheable(value="tracking")
-    public Rank trackSource(S source, URL streamUrl) {
+    public Rank trackSource(S source, URL streamUrl) throws TrackingServiceException {
         Assert.notNull(source, "source parameter can't be null.");
         Assert.notNull(streamUrl, "streamUrl parameter can't be null.");
 
-        logger.debug("[trackSource] - source: {}, streamUrl: {}", source, streamUrl);
+        try {
+            logger.debug("[trackSource] - source: {}, streamUrl: {}", source, streamUrl);
 
-        String streamIdentifier = Stream.buildIdentifier(streamUrl);
-        Rank existingRank = rankService.findRank(source, streamIdentifier, streamType);
+            String streamIdentifier = Stream.buildIdentifier(streamUrl);
+            Rank existingRank = rankService.findRank(source, streamIdentifier, streamType);
 
-        Rank newRank = rankService.fetchRank(source);
-        existingRank.update(newRank);
+            Rank newRank = rankService.fetchRank(source);
+            existingRank.update(newRank);
 
-        streamService.updateStream(streamIdentifier, streamType, existingRank);
+            streamService.updateStream(streamIdentifier, streamType, existingRank);
 
-        return existingRank;
+            return existingRank;
+        } catch (RankServiceException e) {
+            throw new TrackingServiceException(e);
+        }
     }
 
     @Transactional(readOnly = true)

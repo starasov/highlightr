@@ -8,5 +8,5 @@ import com.blogpost.starasov.highlightr.model.Rank;
  * Time: 7:22 AM
  */
 public interface RankFinder<S> {
-    Rank get(S source);
+    Rank get(S source) throws RankFinderException;
 }

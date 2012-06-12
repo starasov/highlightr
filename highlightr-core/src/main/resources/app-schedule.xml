@@ -6,5 +6,5 @@
     <task:annotation-driven executor="executor" scheduler="scheduler"/>
 
     <task:scheduler id="scheduler" pool-size="10"/>
-    <task:executor id="executor" pool-size="5"/>
+    <task:executor id="executor" pool-size="10"/>
 </beans>

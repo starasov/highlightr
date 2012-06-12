@@ -3,6 +3,7 @@ package com.blogpost.starasov.highlightr.controller.api;
 import com.blogpost.starasov.highlightr.model.Rank;
 import com.blogpost.starasov.highlightr.model.Statistics;
 import com.blogpost.starasov.highlightr.service.TrackingService;
+import com.blogpost.starasov.highlightr.service.TrackingServiceException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,7 @@ public class TopicRankController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/stream")
     public @ResponseBody Object getTopicRankForStream(@RequestParam(value = "stream", required = true) URL streamUrl,
-                                                      @RequestParam(value = "query", required = true) String query) {
+                                                      @RequestParam(value = "query", required = true) String query) throws TrackingServiceException {
         logger.debug("[getTopicRankForStream] - streamUrl: {}, query: {}", streamUrl, query);
 
         validateQuery(query);
